@@ -24,3 +24,6 @@ olvidarProgramas::Int->Robot->Robot
 olvidarProgramas n robot= robot{
     programas= drop n (programas robot)
 }
+
+poder :: Robot -> Int
+poder robot = cantidadEnergia robot + nivelExperiencia robot * length (programas robot)
