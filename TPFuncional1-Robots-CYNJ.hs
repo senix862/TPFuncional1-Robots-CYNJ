@@ -45,13 +45,7 @@ existeRobot nombreBuscado academia =
     any(\robot -> nombre robot == nombreBuscado && null(programas robot)) academia
 
 
-mejorOponente :: Robot -> Academia -> Robot
-mejorOponente robot academia =
-    foldl1(\robot1 robot2->
-        if diferenciaDePoder robot robot1 >= diferenciaDePoder robot robot2
-            then robot1
-            else robot2
-        ) academia
+
 
 -- TIPO: 
 f:: Ord a => a -> [a] -> a
@@ -70,3 +64,11 @@ f 4 [7,6,2,1]  -> 4>7 and 4>6 (NOOOO!)
 	           -> 4>6 and 4>2 (noooooooo!)
                -> 4>2 and 4>1 (siiiiiiiiiii.!!)
 -}
+
+mejorOponente :: Robot -> Academia -> Robot
+mejorOponente robot academia =
+    foldl1(\robot1 robot2->
+        if diferenciaDePoder robot robot1 >= diferenciaDePoder robot robot2
+            then robot1
+            else robot2
+        ) academia
