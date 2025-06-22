@@ -27,3 +27,10 @@ olvidarProgramas n robot= robot{
 
 poder :: Robot -> Int
 poder robot = cantidadEnergia robot + nivelExperiencia robot * length (programas robot)
+
+
+type Academia = [Robot]
+
+existeRobot::String->Academia->Bool
+existeRobot nombreBuscado academia =
+    any(\robot -> nombre robot == nombreBuscado && null(programas robot)) academia
