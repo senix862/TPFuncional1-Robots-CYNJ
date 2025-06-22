@@ -19,3 +19,8 @@ descargaElectrica robot
                 |otherwise = robot{
                     cantidadEnergia = cantidadEnergia robot `div` 2
                 }
+
+olvidarProgramas::Int->Robot->Robot
+olvidarProgramas n robot= robot{
+    programas= drop n (programas robot)
+}
