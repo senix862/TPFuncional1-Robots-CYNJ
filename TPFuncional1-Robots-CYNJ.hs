@@ -34,3 +34,12 @@ type Academia = [Robot]
 existeRobot::String->Academia->Bool
 existeRobot nombreBuscado academia =
     any(\robot -> nombre robot == nombreBuscado && null(programas robot)) academia
+
+
+mejorOponente :: Robot -> Academia -> Robot
+mejorOponente robot academia =
+    foldl1(\robot1 robot2->
+        if diferenciaDePoder robot robot1 >= diferenciaDePoder robot robot2
+            then robot1
+            else robot2
+        ) academia
