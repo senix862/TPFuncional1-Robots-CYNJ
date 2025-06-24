@@ -1,3 +1,6 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Eta reduce" #-}
+{-# HLINT ignore "Redundant bracket" #-}
 type Programa = Robot -> Robot
 
 data Robot = Robot {
@@ -38,13 +41,16 @@ poder robot = cantidadEnergia robot + nivelExperiencia robot * length (programas
 danio :: Robot -> Programa -> Int
 danio robot programa = cantidadEnergia robot - cantidadEnergia (programa robot)
 
+diferenciaDePoder :: Robot -> Robot -> Int
+diferenciaDePoder robot1 robot2 = abs(poder robot1 - poder robot2)
+
 type Academia = [Robot]
 
 existeRobot::String->Academia->Bool
-existeRobot nombreBuscado academia =
-    any(\robot -> nombre robot == nombreBuscado && null(programas robot)) academia
+existeRobot nombreBuscado academia = any(\robot -> nombre robot == nombreBuscado && null(programas robot)) academia
 
-
+losViejosSonObstinados :: Academia -> Bool
+losViejosSonObstinados = all (\robot -> nivelExperiencia robot <= 16 && length(programas robot) > 3 * nivelExperiencia robot)
 
 
 -- TIPO: 
@@ -72,3 +78,7 @@ mejorOponente robot academia =
             then robot1
             else robot2
         ) academia
+
+
+noPuedeDerrotarle :: Robot -> Robot -> Bool
+noPuedeDerrotarle atacante defensor = cantidadEnergia (foldr (\programa robot -> programa robot) defensor (programas atacante)) >= cantidadEnergia defensor
