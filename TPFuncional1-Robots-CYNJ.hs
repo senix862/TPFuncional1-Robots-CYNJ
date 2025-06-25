@@ -37,9 +37,8 @@ autoAtaque robot
 poder :: Robot -> Int
 poder robot = cantidadEnergia robot + nivelExperiencia robot * length (programas robot)
 
-
 danio :: Robot -> Programa -> Int
-danio robot programa = cantidadEnergia robot - cantidadEnergia (programa robot)
+danio robot programa = cantidadEnergia robot - cantidadEnergia (programas robot)
 
 diferenciaDePoder :: Robot -> Robot -> Int
 diferenciaDePoder robot1 robot2 = abs(poder robot1 - poder robot2)
@@ -50,26 +49,33 @@ existeRobot::String->Academia->Bool
 existeRobot nombreBuscado academia = any(\robot -> nombre robot == nombreBuscado && null(programas robot)) academia
 
 losViejosSonObstinados :: Academia -> Bool
-losViejosSonObstinados = all (\robot -> length (programas robot) > 3 * nivelExperiencia robot) . filter (\robot -> nivelExperiencia robot > 16)
+losViejosSonObstinados = all (\robot -> nivelExperiencia robot <= 16 && length(programas robot) > 3 * nivelExperiencia robot)
 
 
--- TIPO: 
-f:: Ord a => a -> [a] -> a
---FORMA MAS EXPRESIVA: 
+{-
 f x [y] = y
-f x (y1:y2:ys) = if x > y1 && x > y2 then y2 else (y2 : ys)
---PROPOSITO y EJEMPLO:
---La función f recibe una numero y una lista, 
---y devuelve el elemento de la lista (si la lista tiene un solo elemento); si la 
---lista tiene al menos 2 elementos,compara el numero con los 2 primeros elementos de la misma;
---si el numero es mayor a y1 y y2, devuelve y2
---de lo contrario, devuelve la cola de la lista a partir de y2.
-{-ej:
-f 5 [2,1,8,9]  -> 5>2 and 5>1 (siiiiiiii)
-f 4 [7,6,2,1]  -> 4>7 and 4>6 (NOOOO!)
-	           -> 4>6 and 4>2 (noooooooo!)
-               -> 4>2 and 4>1 (siiiiiiiiiii.!!)
--}
+f x (y1:y2:ys)
+      | x y1 >= x y2 = f x (y1:ys)
+      | otherwise = f x (y2 : ys)
+
+Tipo:
+f::f :: Ord b => (a -> b) -> [a] -> a
+La función f recibe dos parametros, uno de los parametros es una función que transforma 
+un valor de tipo a en otro de tipo b, donde b es ordenable (Ord b) y el otro parametro es y una lista de elementos de tipo a.
+Su objetivo es recorrer la lista y devolver el elemento que tenga el mayor valor según el criterio de la funcion 
+
+Mejora en terminos de expresividad:
+maximo :: Ord b => (a -> b) -> [a] -> a
+maximo _ [elemento] = elemento
+maximo funcion (primero:segundo:resto)
+  | funcion primero >= funcion segundo = maximo funcion (primero : resto)
+  | otherwise     = maximo funcion (segundo : resto)
+Versión más expresiva (sin recursivadad)
+maximo :: Ord b => (a -> b) -> [a] -> a
+maximo funcion  = foldl1 (\a b -> if criterio a >= funcion b then a else b)
+Esta versión utiliza la función de orden superior foldl1 
+para acumular el mejor elemento de la lista, comparando siempre dos elementos a la vez, -}
+
 
 mejorProgramaContra :: Robot -> Robot -> Programa
 mejorProgramaContra robotOponente robot =
@@ -89,4 +95,4 @@ mejorOponente robot academia =
 
 
 noPuedeDerrotarle :: Robot -> Robot -> Bool
-noPuedeDerrotarle atacante defensor = cantidadEnergia defensor == cantidadEnergia (foldl (\r p -> p r) defensor (programas atacante))
+noPuedeDerrotarle atacante defensor = cantidadEnergia (foldr (\programa robot -> programa robot) defensor (programas atacante)) >= cantidadEnergia defensor
