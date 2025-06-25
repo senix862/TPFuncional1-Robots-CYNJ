@@ -1,3 +1,6 @@
+{- Alumnos: Caceres - Jalowicki - Navarro - Yanzón
+   Profesores: Alejandro Santari - Julio Hernandez - Mauricio Burgos -}
+
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Eta reduce" #-}
 {-# HLINT ignore "Redundant bracket" #-}
