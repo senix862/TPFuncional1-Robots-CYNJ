@@ -38,7 +38,7 @@ poder :: Robot -> Int
 poder robot = cantidadEnergia robot + nivelExperiencia robot * length (programas robot)
 
 danio :: Robot -> Programa -> Int
-danio robot programa = cantidadEnergia robot - cantidadEnergia (programas robot)
+danio robot programa = cantidadEnergia robot - cantidadEnergia (programa robot)
 
 diferenciaDePoder :: Robot -> Robot -> Int
 diferenciaDePoder robot1 robot2 = abs(poder robot1 - poder robot2)
@@ -49,7 +49,7 @@ existeRobot::String->Academia->Bool
 existeRobot nombreBuscado academia = any(\robot -> nombre robot == nombreBuscado && null(programas robot)) academia
 
 losViejosSonObstinados :: Academia -> Bool
-losViejosSonObstinados = all (\robot -> nivelExperiencia robot <= 16 && length(programas robot) > 3 * nivelExperiencia robot)
+losViejosSonObstinados = all (\robot -> length (programas robot) > 3 * nivelExperiencia robot) . filter (\robot -> nivelExperiencia robot > 16)
 
 
 {-
@@ -95,4 +95,4 @@ mejorOponente robot academia =
 
 
 noPuedeDerrotarle :: Robot -> Robot -> Bool
-noPuedeDerrotarle atacante defensor = cantidadEnergia (foldr (\programa robot -> programa robot) defensor (programas atacante)) >= cantidadEnergia defensor
+noPuedeDerrotarle atacante defensor = cantidadEnergia defensor == cantidadEnergia (foldl (\r p -> p r) defensor (programas atacante))
