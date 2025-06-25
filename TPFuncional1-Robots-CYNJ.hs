@@ -71,6 +71,14 @@ f 4 [7,6,2,1]  -> 4>7 and 4>6 (NOOOO!)
                -> 4>2 and 4>1 (siiiiiiiiiii.!!)
 -}
 
+mejorProgramaContra :: Robot -> Robot -> Programa
+mejorProgramaContra robotOponente robot =
+  foldl1 (\programa1 programa2 ->
+    if danio robotOponente programa1 >= danio robotOponente programa2
+      then programa1
+      else programa2
+  ) (programas robot)
+
 mejorOponente :: Robot -> Academia -> Robot
 mejorOponente robot academia =
     foldl1(\robot1 robot2->
