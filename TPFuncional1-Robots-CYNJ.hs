@@ -95,4 +95,4 @@ mejorOponente robot academia =
 
 
 noPuedeDerrotarle :: Robot -> Robot -> Bool
-noPuedeDerrotarle atacante defensor = cantidadEnergia defensor == cantidadEnergia (foldl (\r p -> p r) defensor (programas atacante))
+noPuedeDerrotarle defensor atacante  = cantidadEnergia defensor == cantidadEnergia (foldl (\r p -> p r) defensor (programas atacante))
